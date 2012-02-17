@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="build" name="kryptproviderjce">
+  <property environment="env"/>
+  <property file="build.properties"/>
+
+  <property name="src.java" value="src"/>
+  <property name="target" value="build"/>
+  <property name="target.classes" value="${target}/classes"/>
+  <property name="target.classes.test" value="${target}/test-classes"/>
+  <property name="lib.dir" value="lib"/>
+  <property name="test.results.dir" value="${target}/test-results"/>
+  <property name="jruby.jar" value="${jruby.home}/lib/jruby.jar"/>
+  <property name="kryptcore.jar" value="${kryptcore.home}/lib/kryptcore.jar"/>
+  <property name="version.source" value="1.5"/>
+  <property name="version.target" value="1.5"/>
+  <property name="platform.javac" value="${java.home}/bin/javac"/>
+  
+  <echo message="${platform.javac}"/>
+
+  <path id="build.classpath">
+    <fileset dir="${lib.dir}" includes="*.jar" excludes="kryptprovider.jar,kryptcore.jar,jruby.jar"/>
+    <pathelement location="${jruby.jar}"/>
+    <pathelement location="${kryptcore.jar}"/>
+  </path>
+
+  <path id="emma.classpath">
+    <pathelement location="build_lib/emma.jar" />
+    <pathelement location="build_lib/emma_ant.jar" />
+  </path>
+
+  <target name="init">
+    <mkdir dir="${target}"/>
+    <mkdir dir="${target.classes}"/>
+    <mkdir dir="${test.results.dir}"/>
+  </target>
+
+  <target name="clean">
+    <delete dir="${target}"/>
+  </target>
+
+  <target name="build" depends="init" description="Compiles Java source files">
+    <javac executable="${platform.javac}" debug="true" includeAntRuntime="false" destdir="${target.classes}" source="${version.source}" target="${version.target}">
+      <classpath refid="build.classpath"/>
+      <src path="${src.java}"/>
+    </javac>
+    <antcall target="instrument"/>
+  </target>
+
+  <target name="jar" depends="build" description="Build a JAR file with the generated Java class files">
+    <jar destfile="${lib.dir}/kryptprovider.jar" basedir="${target.classes}">
+      <manifest>
+        <attribute name="Built-By" value="${user.name}"/>
+      </manifest>
+    </jar>
+    <antcall target="add-emma-jars"/>
+  </target>
+
+  <target name="coverage-jar" depends="enable-coverage,jar" description="Build a JAR file with coverage support" />
+
+  <target name="enable-coverage" description="Enable code coverage reporting for built artifacts.">
+    <property name="coverage.enabled" value="true"/>
+  </target>
+
+  <target name="add-emma-jars" if="coverage.enabled">
+    <jar destfile="${lib.dir}/kryptprovider.jar" compress="true" index="true" update="true">
+      <zipfileset src="build_lib/emma.jar"/>
+    </jar>
+  </target>
+
+  <target name="emma" description="Turns on EMMA instrumentation/reporting; use with 'jar' to create an instrumented jar." >
+    <available property="emma.present"
+               classname="com.vladium.app.IAppVersion"
+               classpathref="emma.classpath"/>
+    <taskdef resource="emma_ant.properties" classpathref="emma.classpath" />
+    <property name="emma.enabled" value="true" />
+  </target>
+
+  <target name="instrument" depends="emma" if="coverage.enabled">
+    <emma enabled="${emma.enabled}" >
+      <instr instrpath="${target.classes}"
+             mode="overwrite"
+             metadatafile="${test.results.dir}/coverage.emma"
+             merge="true">
+      </instr>
+    </emma>
+  </target>
+
+  <target name="coverage-report" description="Generate a coverage report based on aggregated runs." depends="emma">
+    <emma enabled="${emma.enabled}" >
+      <report sourcepath="${src.java}" >
+        <fileset dir="${test.results.dir}" >
+          <include name="*.emma" />
+        </fileset>
+        <fileset dir="${basedir}" >
+          <include name="*.ec" />
+        </fileset>
+        <html outfile="${test.results.dir}/coverage.html"/>
+        <xml outfile="${test.results.dir}/coverage.xml"/>
+      </report>
+    </emma>
+  </target>
+</project>

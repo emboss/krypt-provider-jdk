@@ -1,0 +1,21 @@
+== krypt-provider-jce
+
+A Java implementation of the krypt-provider API 
+using the standard JDK Java Cryptography Extension.
+
+== Requirements
+
+Java SE 6 or higher. In case you want to be able to
+use Elliptic Curve Cryptography, Java SE 7 or
+higher is required.
+ 
+== krypt
+
+For more information about krypt, please have a
+look at the project and its wiki at
+
+https://github.com/emboss/krypt
+ 
+Copyright (c) 2011
+Hiroshi Nakamura <nahi@ruby-lang.org>
+Martin Bosslet <Martin.Bosslet@googlemail.com>
