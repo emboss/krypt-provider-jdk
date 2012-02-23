@@ -99,7 +99,6 @@ public class Algorithms {
         private final String rubyName;
 
         public JavaAlgorithm(String javaName, String rubyName) {
-            System.out.println("In JavaAlgorithm");
             this.javaName = javaName;
             this.rubyName = rubyName;
         }
