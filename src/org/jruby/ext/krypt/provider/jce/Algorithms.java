@@ -81,7 +81,6 @@ public class Algorithms {
     }
     
     public static JavaAlgorithm getJavaAlgorithm(String rbAlgorithm) throws NoSuchAlgorithmException {
-        System.out.println("In Getter");
         JavaAlgorithm algo = rubyToJavaMap.get(rbAlgorithm);
         if (algo == null)
             throw new NoSuchAlgorithmException("Algorithm not supported: " + rbAlgorithm);

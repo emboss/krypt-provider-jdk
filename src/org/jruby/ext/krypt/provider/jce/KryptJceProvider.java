@@ -47,12 +47,10 @@ public class KryptJceProvider implements KryptProvider {
         return INSTANCE;
     }
     
-    @Override
     public Digest newDigestByName(String name) throws NoSuchAlgorithmException {
         return new JceDigest(Algorithms.getJavaAlgorithm(name));
     }
 
-    @Override
     public Digest newDigestByOid(String oid) throws NoSuchAlgorithmException {
         return new JceDigest(Algorithms.getJavaAlgorithmForOid(oid));
     }
