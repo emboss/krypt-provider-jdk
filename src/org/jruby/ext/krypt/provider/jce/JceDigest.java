@@ -31,7 +31,10 @@ package org.jruby.ext.krypt.provider.jce;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
 import org.jruby.ext.krypt.provider.Digest;
+import org.jruby.ext.krypt.provider.jce.Algorithms.JavaAlgorithm;
 
 /**
  * 
@@ -39,10 +42,26 @@ import org.jruby.ext.krypt.provider.Digest;
  */
 public class JceDigest implements Digest {
     
-    private final MessageDigest md;
+    private static final Map<JavaAlgorithm, Integer> blockLengthMap = new HashMap<JavaAlgorithm, Integer>();
     
-    public JceDigest(String name) throws NoSuchAlgorithmException {
-        this.md = MessageDigest.getInstance(name);
+    static {
+        blockLengthMap.put(Algorithms.SHA1, 64);
+        blockLengthMap.put(Algorithms.SHA224, 64);
+        blockLengthMap.put(Algorithms.SHA256, 64);
+        blockLengthMap.put(Algorithms.SHA384, 128);
+        blockLengthMap.put(Algorithms.SHA512, 128);
+        blockLengthMap.put(Algorithms.RIPEMD160, 64);
+        blockLengthMap.put(Algorithms.MD5, 64);
+    }
+    
+    private final MessageDigest md;
+    private final JavaAlgorithm algorithm;
+    private final int blockLength;
+    
+    public JceDigest(JavaAlgorithm algorithm) throws NoSuchAlgorithmException {
+        this.md = MessageDigest.getInstance(algorithm.getCanonicalJavaName());
+        this.algorithm = algorithm;
+        this.blockLength = blockLengthMap.get(algorithm);
     }
 
     @Override
@@ -58,5 +77,25 @@ public class JceDigest implements Digest {
     @Override
     public void update(byte[] data, int off, int len) {
         md.update(data, off, len);
+    }
+    
+    @Override
+    public void reset() {
+        md.reset();
+    }
+    
+    @Override
+    public String getName() {
+        return algorithm.getCanonicalRubyName();
+    }
+            
+    @Override
+    public int getDigestLength() {
+        return md.getDigestLength();
+    }
+    
+    @Override
+    public int getBlockLength() {
+        return blockLength;
     }
 }

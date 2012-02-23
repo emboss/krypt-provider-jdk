@@ -49,15 +49,11 @@ public class KryptJceProvider implements KryptProvider {
     
     @Override
     public Digest newDigestByName(String name) throws NoSuchAlgorithmException {
-        return new JceDigest(name);
+        return new JceDigest(Algorithms.getJavaAlgorithm(name));
     }
 
     @Override
     public Digest newDigestByOid(String oid) throws NoSuchAlgorithmException {
-        return newDigestByName(nameForOid(oid));
-    }
-    
-    private static String nameForOid(String oid) throws NoSuchAlgorithmException {
-        throw new UnsupportedOperationException("Not implemented yet.");
+        return new JceDigest(Algorithms.getJavaAlgorithmForOid(oid));
     }
 }
