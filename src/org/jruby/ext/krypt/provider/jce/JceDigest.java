@@ -45,6 +45,7 @@ public class JceDigest implements Digest {
     private static final Map<JavaAlgorithm, Integer> blockLengthMap = new HashMap<JavaAlgorithm, Integer>();
     
     static {
+        System.out.println("In static");
         blockLengthMap.put(Algorithms.SHA1, 64);
         blockLengthMap.put(Algorithms.SHA224, 64);
         blockLengthMap.put(Algorithms.SHA256, 64);
