@@ -32,7 +32,6 @@ package org.jruby.ext.krypt.provider.jce;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * 
@@ -99,6 +98,8 @@ public class Algorithms {
         private final String rubyName;
 
         public JavaAlgorithm(String javaName, String rubyName) {
+            if (javaName == null) throw new NullPointerException("javaName");
+            if (rubyName == null) throw new NullPointerException("rubyName");
             this.javaName = javaName;
             this.rubyName = rubyName;
         }
@@ -120,10 +121,10 @@ public class Algorithms {
                 return false;
             }
             final JavaAlgorithm other = (JavaAlgorithm) obj;
-            if (!Objects.equals(this.javaName, other.javaName)) {
+            if (!this.javaName.equals(other.javaName)) {
                 return false;
             }
-            if (!Objects.equals(this.rubyName, other.rubyName)) {
+            if (!this.rubyName.equals(other.rubyName)) {
                 return false;
             }
             return true;
@@ -132,8 +133,8 @@ public class Algorithms {
         @Override
         public int hashCode() {
             int hash = 3;
-            hash = 53 * hash + Objects.hashCode(this.javaName);
-            hash = 53 * hash + Objects.hashCode(this.rubyName);
+            hash = 53 * hash + this.javaName.hashCode();
+            hash = 53 * hash + this.rubyName.hashCode();
             return hash;
         }
     }

@@ -64,30 +64,37 @@ public class JceDigest implements Digest {
         this.blockLength = blockLengthMap.get(algorithm);
     }
 
+    @Override
     public byte[] digest() {
         return md.digest();
     }
 
+    @Override
     public byte[] digest(byte[] data) {
         return md.digest(data);
     }
 
+    @Override
     public void update(byte[] data, int off, int len) {
         md.update(data, off, len);
     }
     
+    @Override
     public void reset() {
         md.reset();
     }
     
+    @Override
     public String getName() {
         return algorithm.getCanonicalRubyName();
     }
             
+    @Override
     public int getDigestLength() {
         return md.getDigestLength();
     }
     
+    @Override
     public int getBlockLength() {
         return blockLength;
     }
