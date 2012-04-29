@@ -27,13 +27,14 @@
 * the provisions above, a recipient may use your version of this file under
 * the terms of any one of the CPL, the GPL or the LGPL.
  */
-package org.jruby.ext.krypt.provider.jce;
+package org.jruby.ext.krypt.provider.jce.digest;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 import org.jruby.ext.krypt.provider.Digest;
+import org.jruby.ext.krypt.provider.jce.Algorithms;
 import org.jruby.ext.krypt.provider.jce.Algorithms.JavaAlgorithm;
 
 /**

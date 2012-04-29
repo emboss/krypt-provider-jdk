@@ -29,6 +29,7 @@
  */
 package org.jruby.ext.krypt.provider.jce;
 
+import org.jruby.ext.krypt.provider.jce.digest.JceDigest;
 import java.security.NoSuchAlgorithmException;
 import org.jruby.ext.krypt.provider.Digest;
 import org.jruby.ext.krypt.provider.KryptProvider;
