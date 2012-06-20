@@ -33,6 +33,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
+import org.jruby.ext.krypt.impl.digest.RIPEMD160Digest;
 import org.jruby.ext.krypt.provider.Digest;
 import org.jruby.ext.krypt.provider.jce.Algorithms;
 import org.jruby.ext.krypt.provider.jce.Algorithms.JavaAlgorithm;
@@ -58,31 +59,54 @@ public class JceDigest implements Digest {
     private final MessageDigest md;
     private final JavaAlgorithm algorithm;
     private final int blockLength;
+    private RIPEMD160Digest rmd=null;
     
+    private boolean ripemd=false;
     public JceDigest(JavaAlgorithm algorithm) throws NoSuchAlgorithmException {
+        //Insert here the RIPEMD thing
+        if(algorithm.getCanonicalJavaName().equals("RIPEMD-160"))
+        {
+            this.rmd=new RIPEMD160Digest();
+            this.md=null;
+            ripemd=true;
+        }
+        else
         this.md = MessageDigest.getInstance(algorithm.getCanonicalJavaName());
+       
         this.algorithm = algorithm;
         this.blockLength = blockLengthMap.get(algorithm);
     }
 
     @Override
     public byte[] digest() {
-        return md.digest();
+        if(ripemd)
+            return rmd.digest();
+        else
+            return md.digest();
     }
 
     @Override
     public byte[] digest(byte[] data) {
-        return md.digest(data);
+        if(ripemd)
+            return rmd.digest(data);
+        else
+            return md.digest(data);
     }
 
     @Override
     public void update(byte[] data, int off, int len) {
-        md.update(data, off, len);
+        if(ripemd)
+            rmd.update(data, off, len);
+        else
+            md.update(data, off, len);
     }
     
     @Override
     public void reset() {
-        md.reset();
+        if(ripemd)
+            rmd.reset();
+        else
+            md.reset();
     }
     
     @Override
@@ -92,7 +116,10 @@ public class JceDigest implements Digest {
             
     @Override
     public int getDigestLength() {
-        return md.getDigestLength();
+        if(ripemd)
+            return rmd.getDigestSize();
+        else
+            return md.getDigestLength();
     }
     
     @Override
