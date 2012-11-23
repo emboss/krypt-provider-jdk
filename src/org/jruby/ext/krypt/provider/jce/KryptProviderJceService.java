@@ -39,6 +39,6 @@ import org.jruby.ext.krypt.provider.ProviderRegistry;
 public class KryptProviderJceService {
     
     public static void create(Ruby runtime) {
-        ProviderRegistry.getInstance().registerDefault(KryptJceProvider.getInstance());
+        ProviderRegistry.getInstance().registerProvider(runtime, KryptJceProvider.getInstance());
     }    
 }

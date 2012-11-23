@@ -47,7 +47,7 @@
   </target>
 
   <target name="jar" depends="build" description="Build a JAR file with the generated Java class files">
-    <jar destfile="${lib.dir}/kryptprovider.jar" basedir="${target.classes}">
+    <jar destfile="${lib.dir}/kryptproviderjce.jar" basedir="${target.classes}">
       <manifest>
         <attribute name="Built-By" value="${user.name}"/>
       </manifest>

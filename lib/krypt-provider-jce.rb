@@ -15,4 +15,4 @@ See the file 'LICENSE' for further details.
 
 =end
 
-require 'kryptprovider.jar'
+require 'kryptproviderjce.jar'

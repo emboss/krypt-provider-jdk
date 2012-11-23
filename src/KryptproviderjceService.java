@@ -37,7 +37,7 @@ import org.jruby.runtime.load.BasicLibraryService;
  * 
  * @author <a href="mailto:Martin.Bosslet@googlemail.com">Martin Bosslet</a>
  */
-public class KryptproviderService implements BasicLibraryService {
+public class KryptproviderjceService implements BasicLibraryService {
     @Override
     public boolean basicLoad(Ruby runtime) throws IOException {
         KryptProviderJceService.create(runtime);
