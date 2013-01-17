@@ -1,7 +1,7 @@
-== krypt-provider-jce
+== krypt-provider-jdk
 
 A Java implementation of the krypt-provider API 
-using the standard JDK Java Cryptography Extension.
+using the standard JDK security library.
 
 == Requirements
 

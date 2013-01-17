@@ -27,76 +27,48 @@
 * the provisions above, a recipient may use your version of this file under
 * the terms of any one of the CPL, the GPL or the LGPL.
  */
-package org.jruby.ext.krypt.provider.jce.digest;
+package org.jruby.ext.krypt.provider.jdk;
 
-import java.security.MessageDigest;
+import org.jruby.ext.krypt.provider.jdk.digest.JdkDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
-import java.util.Map;
 import org.jruby.ext.krypt.provider.Digest;
-import org.jruby.ext.krypt.provider.jce.Algorithms;
-import org.jruby.ext.krypt.provider.jce.Algorithms.JavaAlgorithm;
+import org.jruby.ext.krypt.provider.KryptProvider;
 
 /**
  * 
  * @author <a href="mailto:Martin.Bosslet@googlemail.com">Martin Bosslet</a>
  */
-public class JceDigest implements Digest {
+public class KryptJdkProvider implements KryptProvider {
+
+    private KryptJdkProvider() {}
     
-    private static final Map<JavaAlgorithm, Integer> blockLengthMap = new HashMap<JavaAlgorithm, Integer>();
+    private static final KryptJdkProvider INSTANCE = new KryptJdkProvider();
+    private static final String NAME = "jdk";
     
-    static {
-        blockLengthMap.put(Algorithms.SHA1, 64);
-        blockLengthMap.put(Algorithms.SHA224, 64);
-        blockLengthMap.put(Algorithms.SHA256, 64);
-        blockLengthMap.put(Algorithms.SHA384, 128);
-        blockLengthMap.put(Algorithms.SHA512, 128);
-        blockLengthMap.put(Algorithms.RIPEMD160, 64);
-        blockLengthMap.put(Algorithms.MD5, 64);
-    }
-    
-    private final MessageDigest md;
-    private final JavaAlgorithm algorithm;
-    private final int blockLength;
-    
-    public JceDigest(JavaAlgorithm algorithm) throws NoSuchAlgorithmException {
-        this.md = MessageDigest.getInstance(algorithm.getCanonicalJavaName());
-        this.algorithm = algorithm;
-        this.blockLength = blockLengthMap.get(algorithm);
+    public static KryptProvider getInstance() {
+        return INSTANCE;
     }
 
-    @Override
-    public byte[] digest() {
-        return md.digest();
-    }
-
-    @Override
-    public byte[] digest(byte[] data) {
-        return md.digest(data);
-    }
-
-    @Override
-    public void update(byte[] data, int off, int len) {
-        md.update(data, off, len);
-    }
-    
-    @Override
-    public void reset() {
-        md.reset();
-    }
-    
     @Override
     public String getName() {
-        return algorithm.getCanonicalRubyName();
-    }
-            
-    @Override
-    public int getDigestLength() {
-        return md.getDigestLength();
+        return NAME;
     }
     
     @Override
-    public int getBlockLength() {
-        return blockLength;
+    public Digest newDigestByName(String name) {
+        try {
+            return new JdkDigest(Algorithms.getJavaAlgorithm(name));
+        } catch (NoSuchAlgorithmException ex) {
+            return null;
+        }
+    }
+
+    @Override
+    public Digest newDigestByOid(String oid) {
+        try {
+            return new JdkDigest(Algorithms.getJavaAlgorithmForOid(oid));
+        } catch (NoSuchAlgorithmException ex) {
+            return null;
+        }
     }
 }

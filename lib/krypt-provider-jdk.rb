@@ -2,7 +2,7 @@
 
 = Info
 
-krypt-provider API - Java Cryptography Extension
+krypt-provider API - Implementation using the JDK security library
 
 Copyright (C) 2011
 Hiroshi Nakamura <nahi@ruby-lang.org>
@@ -15,4 +15,4 @@ See the file 'LICENSE' for further details.
 
 =end
 
-require 'kryptproviderjce.jar'
+require 'kryptproviderjdk.jar'

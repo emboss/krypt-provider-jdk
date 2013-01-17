@@ -2,16 +2,16 @@ require 'rake'
 require 'ant'
 
 # TODO: update
-MANIFEST = FileList["Rakefile", "Manifest.txt", "README.rdoc", "License.txt", "lib/kryptprovider.jar", "lib/**/*", "spec/**/*"]
+MANIFEST = FileList["Rakefile", "Manifest.txt", "README.rdoc", "License.txt", "lib/**/*", "spec/**/*"]
 File.open("Manifest.txt", "w") {|f| MANIFEST.each {|n| f.puts n } }
 
 task :default => [:build]
 
-file "lib/kryptprovider.jar" => :build
+file "lib/kryptproviderjdk.jar" => :build
 
 desc "Delete artifact files"
 task :clean do
-  rm_f FileList['lib/kryptprovider.jar']
+  rm_f FileList['lib/kryptproviderjdk.jar']
   ant :clean
 end
 

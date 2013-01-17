@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project basedir="." default="build" name="kryptproviderjce">
+<project basedir="." default="build" name="kryptproviderjdk">
   <property environment="env"/>
   <property file="build.properties"/>
 
@@ -18,7 +18,7 @@
   <echo message="${platform.javac}"/>
 
   <path id="build.classpath">
-    <fileset dir="${lib.dir}" includes="*.jar" excludes="kryptprovider.jar,kryptcore.jar,jruby.jar"/>
+    <fileset dir="${lib.dir}" includes="*.jar" excludes="kryptproviderjdk.jar,kryptcore.jar,jruby.jar"/>
     <pathelement location="${jruby.jar}"/>
     <pathelement location="${kryptcore.jar}"/>
   </path>
@@ -47,7 +47,7 @@
   </target>
 
   <target name="jar" depends="build" description="Build a JAR file with the generated Java class files">
-    <jar destfile="${lib.dir}/kryptproviderjce.jar" basedir="${target.classes}">
+    <jar destfile="${lib.dir}/kryptproviderjdk.jar" basedir="${target.classes}">
       <manifest>
         <attribute name="Built-By" value="${user.name}"/>
       </manifest>
@@ -62,7 +62,7 @@
   </target>
 
   <target name="add-emma-jars" if="coverage.enabled">
-    <jar destfile="${lib.dir}/kryptprovider.jar" compress="true" index="true" update="true">
+    <jar destfile="${lib.dir}/kryptproviderjdk.jar" compress="true" index="true" update="true">
       <zipfileset src="build_lib/emma.jar"/>
     </jar>
   </target>

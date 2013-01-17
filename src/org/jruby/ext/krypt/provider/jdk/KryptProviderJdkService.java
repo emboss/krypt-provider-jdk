@@ -27,47 +27,18 @@
 * the provisions above, a recipient may use your version of this file under
 * the terms of any one of the CPL, the GPL or the LGPL.
  */
-package org.jruby.ext.krypt.provider.jce;
+package org.jruby.ext.krypt.provider.jdk;
 
-import org.jruby.ext.krypt.provider.jce.digest.JceDigest;
-import java.security.NoSuchAlgorithmException;
-import org.jruby.ext.krypt.provider.Digest;
-import org.jruby.ext.krypt.provider.KryptProvider;
+import org.jruby.Ruby;
+import org.jruby.ext.krypt.provider.ProviderRegistry;
 
 /**
  * 
  * @author <a href="mailto:Martin.Bosslet@googlemail.com">Martin Bosslet</a>
  */
-public class KryptJceProvider implements KryptProvider {
-
-    private KryptJceProvider() {}
+public class KryptProviderJdkService {
     
-    private static final KryptJceProvider INSTANCE = new KryptJceProvider();
-    
-    public static KryptProvider getInstance() {
-        return INSTANCE;
-    }
-
-    @Override
-    public String getName() {
-        return "jce";
-    }
-    
-    @Override
-    public Digest newDigestByName(String name) {
-        try {
-            return new JceDigest(Algorithms.getJavaAlgorithm(name));
-        } catch (NoSuchAlgorithmException ex) {
-            return null;
-        }
-    }
-
-    @Override
-    public Digest newDigestByOid(String oid) {
-        try {
-            return new JceDigest(Algorithms.getJavaAlgorithmForOid(oid));
-        } catch (NoSuchAlgorithmException ex) {
-            return null;
-        }
-    }
+    public static void create(Ruby runtime) {
+        ProviderRegistry.getInstance().registerProvider(runtime, KryptJdkProvider.getInstance());
+    }    
 }
