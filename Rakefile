@@ -1,7 +1,7 @@
 require 'rake'
 require 'ant'
 
-MANIFEST = FileList["Rakefile", "Manifest.txt", "README.rdoc", "License.txt", "lib/**/*", "spec/**/*"]
+MANIFEST = FileList["Rakefile", "Manifest.txt", "README.rdoc", "LICENSE", "lib/**/*", "spec/**/*"]
 File.open("Manifest.txt", "w") {|f| MANIFEST.each {|n| f.puts n } }
 
 task :default => [:build]
