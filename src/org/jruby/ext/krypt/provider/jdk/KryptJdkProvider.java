@@ -4,6 +4,7 @@
  * Copyright (c) 2011-2013
  * Hiroshi Nakamura <nahi@ruby-lang.org>
  * Martin Bosslet <martin.bosslet@gmail.com>
+ * All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
