@@ -3,3 +3,4 @@ Manifest.txt
 README.rdoc
 License.txt
 lib/krypt-provider-jdk.rb
+lib/kryptproviderjdk.jar

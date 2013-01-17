@@ -1,7 +1,6 @@
 require 'rake'
 require 'ant'
 
-# TODO: update
 MANIFEST = FileList["Rakefile", "Manifest.txt", "README.rdoc", "License.txt", "lib/**/*", "spec/**/*"]
 File.open("Manifest.txt", "w") {|f| MANIFEST.each {|n| f.puts n } }
 
