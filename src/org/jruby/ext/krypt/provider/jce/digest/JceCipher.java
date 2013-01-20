@@ -27,50 +27,55 @@
 * the provisions above, a recipient may use your version of this file under
 * the terms of any one of the CPL, the GPL or the LGPL.
  */
-package org.jruby.ext.krypt.provider.jce;
+package org.jruby.ext.krypt.provider.jce.digest;
 
+import java.security.InvalidKeyException;
+import java.security.Key;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import javax.crypto.ShortBufferException;
 import org.jruby.ext.krypt.provider.Cipher;
-import org.jruby.ext.krypt.provider.Digest;
-import org.jruby.ext.krypt.provider.KryptProvider;
-import org.jruby.ext.krypt.provider.jce.digest.JceCipher;
-import org.jruby.ext.krypt.provider.jce.digest.JceDigest;
+import org.jruby.ext.krypt.provider.jce.Algorithms.JavaAlgorithm;
 
-/**
- * 
- * @author <a href="mailto:Martin.Bosslet@googlemail.com">Martin Bosslet</a>
- */
-public class KryptJceProvider implements KryptProvider {
 
-    private KryptJceProvider() {}
+public class JceCipher implements Cipher {
     
-    private static final KryptJceProvider INSTANCE = new KryptJceProvider();
-    
-    public static KryptProvider getInstance() {
-        return INSTANCE;
+    private final javax.crypto.Cipher cp;
+    private final JavaAlgorithm algorithm;
+       
+    public JceCipher(JavaAlgorithm algorithm) throws NoSuchAlgorithmException, NoSuchPaddingException {
+       
+        this.algorithm = algorithm;
+        this.cp= javax.crypto.Cipher.getInstance(algorithm.getCanonicalJavaName());
     }
-    
+
+  
     @Override
-    public Digest newDigestByName(String name) throws NoSuchAlgorithmException {
-        return new JceDigest(Algorithms.getJavaAlgorithm(name));
+    public byte[] doFinal() throws IllegalBlockSizeException, BadPaddingException{
+        return cp.doFinal();
     }
 
     @Override
-    public Digest newDigestByOid(String oid) throws NoSuchAlgorithmException {
-        return new JceDigest(Algorithms.getJavaAlgorithmForOid(oid));
-    }
-    
-    @Override
-    public Cipher newCipherByName(String name) throws NoSuchAlgorithmException,NoSuchPaddingException {
-        return new JceCipher(Algorithms.getJavaAlgorithm(name));
+    public byte[] doFinal(byte[] input)  throws IllegalBlockSizeException, BadPaddingException{
+        return cp.doFinal(input);
     }
 
-    //Do we do this?
     @Override
-    public Cipher newCipherByOid(String oid) throws NoSuchAlgorithmException, NoSuchPaddingException {
-            return new JceCipher(Algorithms.getJavaAlgorithmForOid(oid));
+    public void init(int opmode, Key key) throws InvalidKeyException{
+        cp.init(opmode, key);
     }
     
+    @Override
+    public int update(byte[] input, int inputOffset, int inputLen, byte[] output, int outputOffset) throws ShortBufferException{
+        return cp.update(input, inputOffset, inputLen, output, outputOffset);
+    }
     
+    @Override
+    public String getName() {
+        return algorithm.getCanonicalRubyName();
+    }
 }

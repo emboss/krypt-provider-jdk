@@ -52,6 +52,13 @@ public class Algorithms {
     public static final JavaAlgorithm RIPEMD160 = new JavaAlgorithm("RIPEMD-160", "RIPEMD160");
     public static final JavaAlgorithm MD5 = new JavaAlgorithm("MD5", "MD5");
     
+    //Ciphers
+    public static final JavaAlgorithm AES = new JavaAlgorithm("AES", "AES");
+    public static final JavaAlgorithm Blowfish = new JavaAlgorithm("Blowfish", "Blowfish");
+    public static final JavaAlgorithm DES = new JavaAlgorithm("DES", "DES");
+    public static final JavaAlgorithm RSA = new JavaAlgorithm("RSA", "RSA");
+    public static final JavaAlgorithm ECIES = new JavaAlgorithm("ECIES", "ECIES");
+    
     static {
         rubyToJavaMap.put("SHA1", SHA1);
         rubyToJavaMap.put("sha1", SHA1);
@@ -67,6 +74,21 @@ public class Algorithms {
         rubyToJavaMap.put("ripemd160", RIPEMD160);
         rubyToJavaMap.put("MD5", MD5);
         rubyToJavaMap.put("md5", MD5);
+        
+        //Ciphers
+        rubyToJavaMap.put("AES", AES);
+        rubyToJavaMap.put("aes", AES);
+        rubyToJavaMap.put("blowfish", Blowfish);
+        rubyToJavaMap.put("BLOWFISH", Blowfish);
+        rubyToJavaMap.put("Blowfish", Blowfish);
+        rubyToJavaMap.put("DES", DES);
+        rubyToJavaMap.put("des", DES);
+        rubyToJavaMap.put("RSA", RSA);
+        rubyToJavaMap.put("rsa", RSA);
+        rubyToJavaMap.put("ECIES", ECIES);
+        rubyToJavaMap.put("ecies", ECIES);
+        
+        
         
         oidToJavaMap.put("1.3.14.3.2.26", SHA1);
         oidToJavaMap.put("2.16.840.1.101.3.4.2.4", SHA224);
