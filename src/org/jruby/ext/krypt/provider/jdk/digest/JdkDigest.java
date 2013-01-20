@@ -31,6 +31,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
+import org.jruby.ext.krypt.impl.digest.RIPEMD160;
 import org.jruby.ext.krypt.provider.Digest;
 import org.jruby.ext.krypt.provider.jdk.Algorithms;
 import org.jruby.ext.krypt.provider.jdk.Algorithms.JavaAlgorithm;
@@ -58,9 +59,17 @@ public class JdkDigest implements Digest {
     private final int blockLength;
     
     public JdkDigest(JavaAlgorithm algorithm) throws NoSuchAlgorithmException {
-        this.md = MessageDigest.getInstance(algorithm.getCanonicalJavaName());
+        this.md = createMessageDigest(algorithm);
         this.algorithm = algorithm;
         this.blockLength = blockLengthMap.get(algorithm);
+    }
+    
+    private static MessageDigest createMessageDigest(JavaAlgorithm algorithm) throws NoSuchAlgorithmException {
+        if (Algorithms.RIPEMD160.equals(algorithm)) {
+            return new RIPEMD160();
+        } else {
+            return MessageDigest.getInstance(algorithm.getCanonicalJavaName());
+        }
     }
 
     @Override
