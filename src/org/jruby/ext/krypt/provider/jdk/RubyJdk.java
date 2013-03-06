@@ -27,46 +27,41 @@
  */
 package org.jruby.ext.krypt.provider.jdk;
 
-import org.jruby.ext.krypt.provider.jdk.digest.JdkDigest;
-import java.security.NoSuchAlgorithmException;
-import org.jruby.ext.krypt.provider.Digest;
-import org.jruby.ext.krypt.provider.KryptProvider;
+import org.jruby.Ruby;
+import org.jruby.RubyClass;
+import org.jruby.RubyModule;
+import org.jruby.anno.JRubyMethod;
+import org.jruby.ext.krypt.provider.RubyNativeProvider;
+import org.jruby.runtime.ObjectAllocator;
+import org.jruby.runtime.ThreadContext;
+import org.jruby.runtime.builtin.IRubyObject;
 
 /**
  * 
  * @author <a href="mailto:Martin.Bosslet@gmail.com">Martin Bosslet</a>
  */
-public class KryptJdkProvider implements KryptProvider {
-
-    protected KryptJdkProvider() {}
+public class RubyJdk extends RubyNativeProvider {
     
-    private static final String NAME = "jdk";
-    
-    @Override
-    public String getName() {
-        return NAME;
-    }
-
-    @Override
-    public void cleanUp() {
-        /* do nothing */
-    }
-    
-    @Override
-    public Digest newDigestByName(String name) {
-        try {
-            return new JdkDigest(Algorithms.getJavaAlgorithm(name));
-        } catch (NoSuchAlgorithmException ex) {
-            return null;
+    public static final ObjectAllocator ALLOCATOR = new ObjectAllocator() {
+        @Override
+        public IRubyObject allocate(Ruby ruby, RubyClass type) {
+            return new RubyJdk(ruby, type);
         }
+    };
+    
+    public RubyJdk(Ruby runtime, RubyClass type) {
+        super(runtime, type, new KryptJdkProvider());
     }
-
+    
     @Override
-    public Digest newDigestByOid(String oid) {
-        try {
-            return new JdkDigest(Algorithms.getJavaAlgorithmForOid(oid));
-        } catch (NoSuchAlgorithmException ex) {
-            return null;
-        }
+    @JRubyMethod
+    public IRubyObject initialize(ThreadContext ctx) {
+        return this;
+    }
+    
+    public static void createJdkProvider(Ruby runtime, RubyModule mKrypt) {
+        RubyModule mProvider = (RubyModule)mKrypt.getConstant("Provider");
+        RubyClass cJdk = mProvider.defineClassUnder("JDK", RubyNativeProvider.getRubyClass(), ALLOCATOR);
+        cJdk.defineAnnotatedMethods(RubyJdk.class);
     }
 }

@@ -28,7 +28,7 @@
 package org.jruby.ext.krypt.provider.jdk;
 
 import org.jruby.Ruby;
-import org.jruby.ext.krypt.provider.ProviderRegistry;
+import org.jruby.RubyModule;
 
 /**
  * 
@@ -37,6 +37,7 @@ import org.jruby.ext.krypt.provider.ProviderRegistry;
 public class KryptProviderJdkService {
     
     public static void create(Ruby runtime) {
-        ProviderRegistry.getInstance().registerProvider(runtime, KryptJdkProvider.getInstance());
+        RubyModule mKrypt = runtime.getModule("Krypt");
+        RubyJdk.createJdkProvider(runtime, mKrypt);
     }    
 }
