@@ -7,7 +7,7 @@
   <property name="target" value="build"/>
   <property name="target.classes" value="${target}/classes"/>
   <property name="target.classes.test" value="${target}/test-classes"/>
-  <property name="lib.dir" value="lib"/>
+  <property name="lib.dir" value="lib/"/>
   <property name="test.results.dir" value="${target}/test-results"/>
   <property name="jruby.jar" value="${jruby.home}/lib/jruby.jar"/>
   <property name="kryptcore.jar" value="${kryptcore.home}/lib/kryptcore.jar"/>

@@ -2,4 +2,6 @@ Rakefile
 Manifest.txt
 README.rdoc
 LICENSE
-lib/krypt-provider-jdk.rb
+lib/krypt
+lib/krypt/provider
+lib/krypt/provider/jdk.rb
